@@ -1,0 +1,6 @@
+fastapi==0.95.0
+uvicorn==0.22.0
+pymongo==4.3.3
+motor==2.5.0
+google-auth==2.16.0
+pydantic==1.10.7
