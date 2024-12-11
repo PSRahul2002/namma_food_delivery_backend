@@ -1,5 +1,7 @@
 import os
 import pymongo
+import certifi
+from pymongo import MongoClient
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.responses import JSONResponse
 from google.oauth2 import id_token
@@ -33,7 +35,11 @@ app.add_middleware(
 )
 
 # MongoDB connection
-client = AsyncIOMotorClient("mongodb+srv://Rahul:qwerty123456@cluster0.n8whb.mongodb.net/")  # Use motor for async connection
+# client = MongoClient(
+#     "mongodb+srv://Rahul:qwerty123456@cluster0.n8whb.mongodb.net/",
+#     tlsCAFile=certifi.where()
+# )
+client = AsyncIOMotorClient("mongodb+srv://Rahul:qwerty123456@cluster0.n8whb.mongodb.net/namma-food-delivery?tlsAllowInvalidCertificates=true")  # Use motor for async connection
 db = client["namma-food-delivery"]
 users_collection = db["users"]  # Users collection
 addresses_collection = db["addresses"]  # Addresses collection = db["user-addresses"]  # Addresses collection
@@ -56,6 +62,10 @@ class AddAddressRequest(BaseModel):
     email: str  # Email to associate the address with the user
     address: Address
 
+# Dependency function
+async def get_database():
+    return db
+
 # Endpoint to get addresses for the user
 @app.get("/api/get_addresses")
 async def get_addresses(email: str):
@@ -64,6 +74,10 @@ async def get_addresses(email: str):
         address["_id"] = str(address["_id"])  # Convert ObjectId to string
     return {"addresses": addresses}
 
+
+@app.get("nothing")
+async def nothing ():
+    print(await addresses_collection.find_one())  # This should return a document or `None`.
 
 
 
