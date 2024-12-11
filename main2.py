@@ -1,7 +1,7 @@
 import os
-import pymongo
+# import pymongo
 import certifi
-from pymongo import MongoClient
+# from pymongo import MongoClient
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.responses import JSONResponse
 from google.oauth2 import id_token
